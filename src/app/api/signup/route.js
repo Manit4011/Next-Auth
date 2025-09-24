@@ -17,7 +17,10 @@ export async function POST(request) {
     // check if user already exists
     const user = await User.findOne({ email });
     if (user) {
-      return NextResponse.json({ error: "User already exists" }, { status: 400 });
+      return NextResponse.json(
+        { error: "User already exists" },
+        { status: 400 }
+      );
     }
 
     // hash the password
@@ -28,16 +31,20 @@ export async function POST(request) {
     const newUser = new User({
       username,
       email,
-      password: hashedPassword
+      password: hashedPassword,
     });
 
     const savedUser = await newUser.save();
 
-    // send verification email
-    await sendEmail({ email, emailType: "VERIFY", userId: savedUser._id });
+    // send verification email and get token back
+    const token = await sendEmail({
+      email,
+      emailType: "VERIFY",
+      userId: savedUser._id,
+    });
 
     return NextResponse.json(
-      { message: "User registered successfully" },
+      { message: "User registered successfully", token }, // ✅ now token is defined
       { status: 201 }
     );
 

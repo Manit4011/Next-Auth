@@ -10,12 +10,12 @@ loadDB();
 
 export async function POST(request) {
   try {
-    const { verifyToken } = await request.json();
-    console.log("verify token:", verifyToken);
+    const { token } = await request.json();
+    console.log("verify token:", token);
 
     // find user with matching token & unexpired link
     const user = await User.findOne({
-      verifyToken,
+      verifyToken: token,
       verifyTokenExpiry: { $gt: Date.now() }
     });
 

@@ -44,7 +44,9 @@ export const sendEmail = async ({ email, emailType, userId }) => {
       </p>`,
     };
 
-    return await transporter.sendMail(mailOptions);
+    await transporter.sendMail(mailOptions);
+
+    return token;
 
   } catch (error) {
     console.log("error while sending email", error);

@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 
 connectDB();
 
-export async function POST(request){
+export async function GET(request){
     //get data from token
     const userId = await getDataFromToken(request);
     const userData = await User.findById(userId).select("-password");
